@@ -12,7 +12,7 @@ services:
       - node-app
   node-app:
     build: ../node-app
-    container_name: node-backend
+    container_name: node-app
     volumes:
       - ./dist:/usr/src/dist
     depends_on:
