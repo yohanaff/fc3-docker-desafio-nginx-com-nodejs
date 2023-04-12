@@ -10,13 +10,19 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - node-app
+    networks:
+      - my-network
+
   node-app:
     build: ../node-app
     container_name: node-app
+    entrypoint: dockerize -wait tcp://mysql-db:3306 -timeout 20s npm start
     volumes:
       - ./dist:/usr/src/dist
     depends_on:
       - mysql-db
+    networks:
+      - my-network
 
   mysql-db:
     image: mysql:5.7
@@ -26,6 +32,11 @@ services:
       MYSQL_DATABASE: fullcycle
     volumes:
       - mysql-data:/var/lib/mysql
+    networks:
+      - my-network
+
+networks:
+  my-network:
 
 volumes:
   mysql-data:
